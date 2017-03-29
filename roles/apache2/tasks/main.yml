@@ -1,0 +1,33 @@
+- name: install apache2 and modules
+  package: name={{ item }}
+  with_items:
+    - httpd
+    - mod_auth_mysql
+
+- name: apache webdav config
+  template: src=webdav.conf dest=/etc/httpd/conf.d/webdav.conf
+  notify: reload apache
+
+- name: change apache port
+  lineinfile:
+    name: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen '
+    insertafter: '^#Listen '
+    line: 'Listen {{ webdav_port }}'
+  notify: reload apache
+
+- name: webdav dir
+  file:
+    name: /home/webdav
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0755
+- name: example files
+  copy: src={{ item }} dest=/home/webdav/{{ item }} owner=apache group=apache
+  with_items:
+    - file1
+    - file2
+
+- name: apache service
+  service: name=httpd state=started enabled=yes

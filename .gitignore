@@ -1,0 +1,4 @@
+*.retry
+*.swp
+facts_cache/
+host_vars/localhost

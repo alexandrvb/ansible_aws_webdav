@@ -1,0 +1,5 @@
+ec2_ami: ami_id
+ec2_key_name: key_id
+hostname: hostname
+domain: domain
+webdav_port: port

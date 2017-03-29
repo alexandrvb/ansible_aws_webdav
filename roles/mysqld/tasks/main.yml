@@ -1,0 +1,33 @@
+- name: install mysqld packages
+  package: name={{ item }}
+  with_items:
+    - mysql-server
+    - MySQL-python27
+
+- name: start mysqld
+  service: name=mysqld state=started enabled=yes
+
+- name: webdav database
+  mysql_db: name={{ webdav_mysql_db }}
+  register: database
+
+- name: webdav user
+  mysql_user:
+    name: "{{ webdav_mysql_user }}"
+    host: localhost
+    priv: '{{ webdav_mysql_db }}.*:ALL'
+    password: "{{ webdav_mysql_password }}"
+
+- name: restore webdav sql
+  template:
+    src: webdav.sql
+    dest: /tmp/webdav.sql
+    owner: root
+    mode: 0600
+
+- name: create users
+  mysql_db:
+    name: "{{ webdav_mysql_db }}"
+    state: import
+    target: /tmp/webdav.sql
+  when: database.changed

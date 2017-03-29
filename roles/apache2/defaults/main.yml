@@ -1,0 +1,8 @@
+webdav_dir: /home/webdav
+webdav_mysql_host: localhost
+webdav_mysql_db: webdav
+webdav_mysql_user: webdav
+webdav_mysql_password: EiTahx3shiethe
+webdav_mysql_table: auth
+webdav_mysql_user_field: username
+webdav_mysql_password_field: password

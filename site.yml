@@ -1,0 +1,10 @@
+- hosts: localhost
+  gather_facts: False
+  roles:
+    - provision
+
+- hosts: ec2hosts
+  become: True
+  roles:
+    - apache2
+    - mysqld
